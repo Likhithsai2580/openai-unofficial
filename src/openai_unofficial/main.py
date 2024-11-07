@@ -227,8 +227,7 @@ class ChatCompletions:
                         line_str = line_str[len('data: '):]
                     data = json.loads(line_str)
                     yield ChatCompletionChunk(data)
-                except json.JSONDecodeError as e:
-                    logger.warning(f"Failed to parse streaming response: {e}")
+                except:
                     continue
 
 class Audio:
