@@ -5,7 +5,7 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/openai-unofficial.svg)](https://pypi.org/project/openai-unofficial/)
 [![Downloads](https://static.pepy.tech/badge/openai-unofficial)](https://pepy.tech/project/openai-unofficial)
 
-An unofficial Python SDK for the OpenAI API, providing seamless integration and easy-to-use methods for interacting with OpenAI's latest powerful AI models, including GPT-4o (Including gpt-4o-audio-preview & gpt-4o-realtime-preview Models), GPT-4, GPT-3.5 Turbo, DALL·E 3, Whisper & Text-to-Speech (TTS) models
+An unofficial Free & Unlimited Python SDK for the OpenAI API, providing seamless integration and easy-to-use methods for interacting with OpenAI's latest powerful AI models, including GPT-4o (Including gpt-4o-audio-preview & gpt-4o-realtime-preview Models), GPT-4, GPT-3.5 Turbo, DALL·E 3, Whisper & Text-to-Speech (TTS) models
 
 ## Table of Contents
 
