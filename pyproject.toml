@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openai-unofficial"
+version = "0.1.0"
+authors = [
+  { name="DevsDoCode", email="devsdocode@gmail.com" },
+]
+description = "Unofficial OpenAI API Python SDK"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.28.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SreejanPersonal/openai-unofficial"
+"Bug Tracker" = "https://github.com/SreejanPersonal/openai-unofficial/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/openai_unofficial"]
+
+# python -m build
+# python -m twine upload dist/*
