@@ -4,17 +4,28 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openai-unofficial"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="DevsDoCode", email="devsdocode@gmail.com" },
 ]
-description = "Unofficial OpenAI API Python SDK"
+description = "Free & Unlimited Unofficial OpenAI API Python SDK - Supports all OpenAI Models & Endpoints"
 readme = "README.md"
 requires-python = ">=3.7"
+keywords = ["openai", "ai", "machine-learning", "chatgpt", "gpt", "dall-e", "text-to-speech", "api", "tts"]
+license = { text = "MIT" }
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
     "requests>=2.28.0",
@@ -23,9 +34,10 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/SreejanPersonal/openai-unofficial"
 "Bug Tracker" = "https://github.com/SreejanPersonal/openai-unofficial/issues"
+"Youtube" = "https://www.youtube.com/@DevsDoCode"
+"Instragram" = "https://www.instagram.com/sree.shades_/"
+"LinkedIn" = "https://www.linkedin.com/in/developer-sreejan/"
+"Twitter" = "https://twitter.com/Anand_Sreejan"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/openai_unofficial"]
-
-# python -m build
-# python -m twine upload dist/*

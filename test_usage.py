@@ -1,4 +1,5 @@
 import base64
+import json
 from pathlib import Path
 import sys
 from colorama import init, Fore, Style
@@ -99,6 +100,88 @@ try:
         print(f"Audio preview saved: {output_path}{Style.RESET_ALL}")
 except Exception as e:
     print(f"{Fore.RED}Audio preview test failed: {e}{Style.RESET_ALL}")
+
+
+#------------------------ Function Calling ------------------------#
+client = OpenAIUnofficial()
+print(f"{Fore.GREEN}▶ Testing Function Calling{Style.RESET_ALL}")
+
+def get_current_weather(location: str, unit: str = "celsius") -> str:
+    if unit == "fahrenheit":
+        temperature = 72
+    else:
+        temperature = 22
+    return f"The weather in {location} is {temperature} degrees {unit}."
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_weather",
+            "description": "Get the current weather for a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "The city name, e.g., London, New York"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": ["celsius", "fahrenheit"],
+                        "description": "Temperature unit"
+                    }
+                },
+                "required": ["location"]
+            }
+        }
+    }
+]
+
+messages = [
+    {"role": "user", "content": "What's the weather like in New York?"}
+]
+
+print(f"{Fore.WHITE}Step 1: Initial API call for function calling")
+response = client.chat.completions.create(
+    model="gpt-4o-mini-2024-07-18",
+    messages=messages,
+    tools=tools,
+    tool_choice="auto"
+)
+
+assistant_message = response.choices[0].message
+print(f"Assistant's Initial Response: {assistant_message.to_dict()}")
+messages.append(assistant_message.to_dict())
+
+if assistant_message.tool_calls:
+    tool_call = assistant_message.tool_calls[0]
+    function_name = tool_call.function.name
+    function_args = json.loads(tool_call.function.arguments)
+    print(f"\nFunction Called: {function_name}")
+    print(f"Function Arguments: {function_args}")
+    
+    function_response = get_current_weather(**function_args)
+    print(f"Function Response: {function_response}")
+    
+    messages.append({
+        "role": "tool",
+        "tool_call_id": tool_call.id,
+        "name": function_name,
+        "content": function_response
+    })
+    
+    print("\nStep 2: Final API call with function response")
+    final_response = client.chat.completions.create(
+        model="gpt-4o-mini-2024-07-18",
+        messages=messages,
+        tools=tools
+    )
+    
+    print(f"Final Assistant Response: {final_response.choices[0].message.content}")
+else:
+    print(f"No function call needed. Response: {assistant_message.content}")
+print(f"{Style.RESET_ALL}\n")
 
 print(f"\n{Fore.CYAN}{'='*50}")
 print(f"{Fore.YELLOW}All tests completed")

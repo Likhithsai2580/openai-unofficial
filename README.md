@@ -21,6 +21,8 @@ An Free & Unlimited unofficial Python SDK for the OpenAI API, providing seamless
   - [Chat Completion with Audio Preview Model](#chat-completion-with-audio-preview-model)
   - [Image Generation](#image-generation)
   - [Audio Speech Recognition with Whisper Model](#audio-speech-recognition-with-whisper-model)
+  - [Function Calling and Tool Usage](#function-calling-and-tool-usage)
+    - [Basic Function Calling](#basic-function-calling)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -45,7 +47,7 @@ An Free & Unlimited unofficial Python SDK for the OpenAI API, providing seamless
 Install the package via pip:
 
 ```bash
-pip install openai-unofficial
+pip install -U openai-unofficial
 ```
 
 ---
@@ -201,6 +203,95 @@ with open("speech.mp3", "rb") as audio_file:
         model="whisper-1"
     )
 print("Transcription:", transcription.text)
+```
+
+### Function Calling and Tool Usage
+
+The SDK supports OpenAI's function calling capabilities, allowing you to define and use tools/functions in your conversations. Here are examples of function calling & tool usage:
+
+#### Basic Function Calling
+
+> ⚠️ **Important Note**: In the current version (0.1.2), complex or multiple function calling is not yet fully supported. The SDK currently supports basic function calling capabilities. Support for multiple function calls and more complex tool usage patterns will be added in upcoming releases.
+
+```python
+from openai_unofficial import OpenAIUnofficial
+import json
+
+client = OpenAIUnofficial()
+
+# Define your functions as tools
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_weather",
+            "description": "Get the current weather in a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "The city and state, e.g., San Francisco, CA"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": ["celsius", "fahrenheit"],
+                        "description": "The temperature unit"
+                    }
+                },
+                "required": ["location"]
+            }
+        }
+    }
+]
+
+# Function to actually get weather data
+def get_current_weather(location: str, unit: str = "celsius") -> str:
+    # This is a mock function - replace with actual weather API call
+    return f"The current weather in {location} is 22°{unit[0].upper()}"
+
+# Initial conversation message
+messages = [
+    {"role": "user", "content": "What's the weather like in London?"}
+]
+
+# First API call to get function calling response
+response = client.chat.completions.create(
+    model="gpt-4o-mini-2024-07-18",
+    messages=messages,
+    tools=tools,
+    tool_choice="auto"
+)
+
+# Get the assistant's message
+assistant_message = response.choices[0].message
+messages.append(assistant_message.to_dict())
+
+# Check if the model wants to call a function
+if assistant_message.tool_calls:
+    # Process each tool call
+    for tool_call in assistant_message.tool_calls:
+        function_name = tool_call.function.name
+        function_args = json.loads(tool_call.function.arguments)
+        
+        # Call the function and get the result
+        function_response = get_current_weather(**function_args)
+        
+        # Append the function response to messages
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "name": function_name,
+            "content": function_response
+        })
+    
+    # Get the final response from the model
+    final_response = client.chat.completions.create(
+        model="gpt-4o-mini-2024-07-18",
+        messages=messages
+    )
+    
+    print("Final Response:", final_response.choices[0].message.content)
 ```
 
 ---
