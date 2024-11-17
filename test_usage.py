@@ -183,6 +183,19 @@ else:
     print(f"No function call needed. Response: {assistant_message.content}")
 print(f"{Style.RESET_ALL}\n")
 
+#------------------------ Audio Transcription ------------------------#
+client = OpenAIUnofficial()
+print(f"{Fore.GREEN}▶ Testing Audio Transcription{Style.RESET_ALL}")
+try:
+    with open("test_audio.mp3", "rb") as audio_file:
+        transcription = client.audio.transcribe(
+            file=audio_file,
+            model="whisper-1"
+        )
+    print(f"{Fore.WHITE}Transcription: {transcription.text}{Style.RESET_ALL}\n")
+except Exception as e:
+    print(f"{Fore.RED}Audio transcription test failed: {e}{Style.RESET_ALL}")
+
 print(f"\n{Fore.CYAN}{'='*50}")
 print(f"{Fore.YELLOW}All tests completed")
 print(f"{Fore.CYAN}{'='*50}{Style.RESET_ALL}\n")

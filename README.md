@@ -39,6 +39,7 @@ An Free & Unlimited unofficial Python SDK for the OpenAI API, providing seamless
 - **Audio Transcription**: Convert speech to text using Whisper models.
 - **Easy to Use**: Simple and intuitive methods to interact with various endpoints.
 - **Extensible**: Designed to be easily extendable for future OpenAI models and endpoints.
+- **Optimized Performance**: Enhanced request handling and response processing for faster and more efficient operations.
 
 ---
 
